@@ -70,7 +70,7 @@ int main() {
     Force forces[3];
     // Figure-8 orbit initial conditions
     bodies[0] = {-1.0, 0.0, 0.0, 0.0, 1.0};  // x, y, x_prev, y_prev, mass
-    bodies[1] = {1.0, 0.0, 0.0, 0.0, 5.0};
+    bodies[1] = {1.0, 0.0, 0.0, 0.0, 1.0};
     bodies[2] = {0.0, 0.0, 0.0, 0.0, 1.0};
 
     // Initial velocities (set previous positions)
