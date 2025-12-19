@@ -1,64 +1,30 @@
+#include <iostream>
 #include "raylib.h"
+
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+
+//Custom headers
+#include "body.h"
+#include "presets.h"
+#include "force.h"
+
 #include <cmath>
 
 const double minDist = 0.0001;
+const int MAX_BODIES = 10;
 
 // Game states
 enum GameState
 {
     TITLE_SCREEN,
+    CONFIG_BODIES,
+    MAIN_MENU,
     SIMULATION,
     PAUSED
 };
 
-// Structs
-struct Body
-{
-    double x, y;
-    double x_prev, y_prev;
-    double mass;
-};
-struct Force
-{
-    double fx, fy;
-};
 
-double distance(const Body &b1, const Body &b2)
-{
-    return sqrt((b2.x - b1.x) * (b2.x - b1.x) + (b2.y - b1.y) * (b2.y - b1.y));
-}
-
-Force calculateForce(const Body &b1, const Body &b2, double G)
-{
-    Force force = {0.0, 0.0};
-    double dist = distance(b1, b2);
-    if (dist < minDist)
-    {
-        dist = minDist;
-    }
-    double dx = b2.x - b1.x;
-    double dy = b2.y - b1.y;
-
-    double F = G * (b1.mass * b2.mass) / (dist * dist);
-
-    force.fx = F * (dx / dist);
-    force.fy = F * (dy / dist);
-    return force;
-}
-
-void updateBody(Body &body, const Force &force, double dt)
-{
-    double ax = force.fx / body.mass;
-    double ay = force.fy / body.mass;
-
-    double x_new = 2 * body.x - body.x_prev + ax * dt * dt;
-    double y_new = 2 * body.y - body.y_prev + ay * dt * dt;
-
-    body.x_prev = body.x;
-    body.y_prev = body.y;
-    body.x = x_new;
-    body.y = y_new;
-}
 
 int main()
 {
@@ -71,14 +37,16 @@ int main()
     // Simulation parameters
     const double dt = 0.001;      // Small timestep
     const int stepsPerFrame = 10; // Multiple physics steps per frame
-    const double G = 1.0;         // Gravitational constant
+    double G = 1.0;               // Gravitational constant
     const int centerX = screenWidth / 2;
     const int centerY = screenHeight / 2;
     const double scale = 100.0; // Physics units to pixels
 
     // Bodies initialization
-    Body bodies[3];
-    Force forces[3];
+    Body bodies[MAX_BODIES];
+    Force forces[MAX_BODIES];
+    int numBodies = 3;
+
     // Figure-8 orbit initial conditions
     bodies[0] = {-1.0, 0.0, 0.0, 0.0, 1.0}; // x, y, x_prev, y_prev, mass
     bodies[1] = {1.0, 0.0, 0.0, 0.0, 1.0};
@@ -99,19 +67,107 @@ int main()
     // Main game loop
     while (!WindowShouldClose())
     {
-        if (gameState == TITLE_SCREEN){
+        // In your main loop, add:
+        if (IsKeyPressed(KEY_F11))
+        {
+            ToggleFullscreen();
+            int screenWidth = GetScreenWidth();
+            int screenHeight = GetScreenHeight();
+            int centerX = screenWidth / 2;
+            int centerY = screenHeight / 2;
+        }
+        if (gameState == TITLE_SCREEN)
+        {
             if (IsKeyPressed(KEY_ENTER))
             {
                 gameState = SIMULATION;
             }
+            if (GuiButton((Rectangle){300, 250, 200, 60}, "Custom Configuration"))
+            {
+                gameState = CONFIG_BODIES;
+            }
+            if (GuiButton((Rectangle){300, 320, 200, 60}, "Main Menu"))
+            {
+                gameState = MAIN_MENU;
+            }
             BeginDrawing();
-            ClearBackground(BLACK);
-            DrawText("Three Body Simulation", screenWidth / 2 - 100, screenHeight / 2 - 40, 20, WHITE);
-            DrawText("Press ENTER to Start", screenWidth / 2 - 100, screenHeight / 2, 20, WHITE);
+            ClearBackground(DARKGRAY);
+            DrawText("Three Body Simulation", screenWidth / 2 - 100, screenHeight / 2 - 200, 20, WHITE);
+            DrawText("Press ENTER to Start", screenWidth / 2 - 100, screenHeight / 2 - 160, 20, WHITE);
             EndDrawing();
             continue;
         }
-        else if (gameState == PAUSED){
+        else if (gameState == CONFIG_BODIES)
+        {
+            BeginDrawing();
+            ClearBackground(DARKGRAY);
+            DrawText("Custom Configuration Screen", screenWidth / 2 - 150, screenHeight / 2 - 40, 20, WHITE);
+            DrawText("Press B to go Back", screenWidth / 2 - 100, screenHeight / 2, 20, WHITE);
+            EndDrawing();
+            if (IsKeyPressed(KEY_B))
+            {
+                gameState = TITLE_SCREEN;
+            }
+            continue;
+        }
+        else if (gameState == MAIN_MENU)
+        {
+            BeginDrawing();
+            ClearBackground(DARKGRAY);
+
+            // Title and instructions - centered at top
+            DrawText("PRESET SCENARIOS", screenWidth / 2 - MeasureText("PRESET SCENARIOS", 30) / 2, 50, 30, WHITE);
+            DrawText("Press S to Start Simulation", screenWidth / 2 - MeasureText("Press S to Start Simulation", 20) / 2, 90, 20, LIGHTGRAY);
+
+            // Layout for 2 rows of 3 buttons
+            int buttonWidth = 220;
+            int buttonHeight = 60;
+            int buttonSpacingX = 250;                                                                       // Space between buttons horizontally
+            int buttonSpacingY = 120;                                                                       // Space between rows
+            int startX = screenWidth / 2 - (3 * buttonSpacingX) / 2 + buttonSpacingX / 2 - buttonWidth / 2; // Center the grid
+            int startY = 180;
+
+            // Draw 6 presets in 2 rows of 3
+            for (int i = 0; i < NUM_PRESETS; i++)
+            {
+                int row = i / 3; // Which row (0 or 1)
+                int col = i % 3; // Which column (0, 1, or 2)
+
+                int buttonX = startX + col * buttonSpacingX;
+                int buttonY = startY + row * buttonSpacingY;
+
+                Rectangle buttonRect = {(float)buttonX, (float)buttonY, (float)buttonWidth, (float)buttonHeight};
+
+                // Draw button
+                if (GuiButton(buttonRect, presets[i].name))
+                {
+                    loadPreset(i, bodies, numBodies, G);
+                    gameState = SIMULATION;
+                }
+
+                // Draw description below button (wrapped text)
+                int descX = buttonX;
+                int descY = buttonY + buttonHeight + 5;
+                int descWidth = buttonWidth;
+
+                // Simple word wrap for description
+                DrawText(TextFormat("%.30s", presets[i].description), descX, descY, 12, LIGHTGRAY);
+                if (strlen(presets[i].description) > 30)
+                {
+                    DrawText(TextFormat("%.30s", presets[i].description + 30), descX, descY + 15, 12, LIGHTGRAY);
+                }
+            }
+
+            EndDrawing();
+
+            if (IsKeyPressed(KEY_S))
+            {
+                gameState = SIMULATION;
+            }
+            continue;
+        }
+        else if (gameState == PAUSED)
+        {
             if (IsKeyPressed(KEY_O))
             {
                 gameState = SIMULATION;
@@ -123,10 +179,11 @@ int main()
             continue;
         }
         if (IsKeyPressed(KEY_P))
-            {
-                gameState = PAUSED;
-            }
-        if (gameState == SIMULATION){
+        {
+            gameState = PAUSED;
+        }
+        if (gameState == SIMULATION)
+        {
             for (int step = 0; step < stepsPerFrame; step++)
             {
                 // Reset forces
