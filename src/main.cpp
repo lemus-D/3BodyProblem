@@ -121,34 +121,35 @@ int main()
             GuiSetStyle(DEFAULT, TEXT_SIZE, defaultSize);
         }
         else if (gameState == CONFIG_SETUP)
-        {
+        {   int defaultSize = GuiGetStyle(DEFAULT, TEXT_SIZE);
+            GuiSetStyle(DEFAULT, TEXT_SIZE, 26);
             BeginDrawing();
             ClearBackground(DARKGRAY);
 
             // Title
             DrawText("SIMULATION SETUP", screenWidth / 2 - MeasureText("SIMULATION SETUP", 30) / 2, 80, 30, WHITE);
 
-            int labelX = screenWidth / 2 - 200;
+            int labelX = screenWidth / 2 - 260;
             int inputX = screenWidth / 2 + 20;
             int startY = 200;
-            int spacing = 80;
+            int spacing = 130;
 
             // Number of bodies
-            GuiLabel((Rectangle){(float)labelX, (float)startY, 200, 30}, "Number of Bodies (1-10):");
+            GuiLabel((Rectangle){(float)labelX, (float)startY, 300, 30}, "Number of Bodies (1-10):");
             if (GuiTextBox((Rectangle){(float)inputX, (float)startY, 150, 30}, numBodiesText, 16, editingNumBodies))
             {
                 editingNumBodies = !editingNumBodies;
             }
 
             // G constant with slider
-            GuiLabel((Rectangle){(float)labelX, (float)startY + spacing, 200, 30}, "G Constant:");
+            GuiLabel((Rectangle){(float)labelX + 70, (float)startY + spacing -6, 200, 30}, "G Constant:");
             float GFloat = (float)G;
             GuiSlider((Rectangle){(float)inputX, (float)startY + spacing, 150, 20}, "0.1", "5", &GFloat, 0.1f, 5.0f);
             G = GFloat;
-
+            
             // Text box for precise G input
             sprintf(GText, "%.2f", G);
-            if (GuiTextBox((Rectangle){(float)inputX + 160, (float)startY + spacing - 5, 80, 30}, GText, 16, editingG))
+            if (GuiTextBox((Rectangle){(float)inputX + 180, (float)startY + spacing -5 , 83, 30}, GText, 16, editingG))
             {
                 editingG = !editingG;
             }
@@ -160,7 +161,7 @@ int main()
             }
 
             // Next button
-            if (GuiButton((Rectangle){screenWidth / 2 - 100, screenHeight - 200, 200, 50}, "Configure Bodies"))
+            if (GuiButton((Rectangle){screenWidth / 2 - 150, screenHeight - 200, 300, 50}, "Configure Bodies"))
             {
                 // Validate and update numBodies
                 int newNumBodies = atoi(numBodiesText);
@@ -179,6 +180,7 @@ int main()
             }
 
             EndDrawing();
+            GuiSetStyle(DEFAULT, TEXT_SIZE, defaultSize);
         }
         else if (gameState == CONFIG_BODIES)
         {
