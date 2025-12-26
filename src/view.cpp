@@ -1,5 +1,6 @@
 #include "view.h"
 #include "body.h"
+#include "presets.h"
 
 BodyConfig bodyConfigs[MAX_BODIES];
 
@@ -56,7 +57,7 @@ void titleScreen(int screenWidth, int screenHeight, GameState *gameState)
 }
 
 void configScreen(int screenWidth, int screenHeight, GameState *gameState, int *numBodies, int *currentBodyIndex, char numBodiesText[], bool *editingNumBodies, double *G, char GText[], bool *editingG)
-{   // Initialize with defaults
+{ // Initialize with defaults
     for (int i = 0; i < MAX_BODIES; i++)
     {
         bodyConfigs[i] = {1.0, 0.0, 0.0, 0.0, 0.0, "1.0", "0.0", "0.0", "0.0", "0.0", false, false, false, false, false};
@@ -260,4 +261,94 @@ void configBodiesScreen(int screenWidth, int screenHeight, GameState *gameState,
     }
 
     EndDrawing();
+}
+
+void mainMenuScreen(int screenWidth, int screenHeight, GameState *gameState, Body bodies[], int *numBodies, double *G)
+{
+    BeginDrawing();
+    ClearBackground(DARKGRAY);
+
+    DrawText("PRESET SCENARIOS", screenWidth / 2 - MeasureText("PRESET SCENARIOS", 30) / 2, 50, 30, WHITE);
+
+    int buttonWidth = 220;
+    int buttonHeight = 60;
+    int buttonSpacingX = 250;
+    int buttonSpacingY = 150;
+    int startX = screenWidth / 2 - (3 * buttonSpacingX) / 2 + buttonSpacingX / 2 - buttonWidth / 2;
+    int startY = 180;
+
+    int defaultSize = GuiGetStyle(DEFAULT, TEXT_SIZE);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
+
+    for (int i = 0; i < NUM_PRESETS; i++)
+    {
+        int row = i / 3;
+        int col = i % 3;
+
+        int buttonX = startX + col * buttonSpacingX;
+        int buttonY = startY + row * buttonSpacingY;
+
+        Rectangle buttonRect = {(float)buttonX, (float)buttonY, (float)buttonWidth, (float)buttonHeight};
+
+        if (GuiButton(buttonRect, presets[i].name))
+        {
+            loadPreset(i, bodies, *numBodies, *G);
+            *gameState = SIMULATION;
+        }
+
+        Rectangle descRect = {
+            (float)buttonX,
+            (float)buttonY + buttonHeight + 10,
+            (float)buttonWidth,
+            60};
+
+        DrawTextEx(GetFontDefault(), presets[i].description, (Vector2){descRect.x, descRect.y}, 14, 1.0f, LIGHTGRAY);
+    }
+
+    GuiSetStyle(DEFAULT, TEXT_SIZE, defaultSize);
+
+    EndDrawing();
+}
+
+void pauseScreen(int screenWidth, int screenHeight, GameState *gameState)
+{
+    if (IsKeyPressed(KEY_O))
+    {
+        *gameState = SIMULATION;
+    }
+    if (IsKeyPressed(KEY_R))
+    {
+        *gameState = TITLE_SCREEN;
+    }
+    BeginDrawing();
+    DrawText("Paused", screenWidth / 2 - 40, screenHeight / 2 - 20, 20, WHITE);
+    DrawText("Press O to Resume", screenWidth / 2 - 80, screenHeight / 2 + 20, 20, WHITE);
+    DrawText("Press R to Restart", screenWidth / 2 - 80, screenHeight / 2 + 60, 20, WHITE);
+    EndDrawing();
+}
+
+void simulationScreen(int screenWidth, int screenHeight, Body bodies[], int numBodies, double scale)
+{
+   BeginDrawing();
+
+            DrawRectangle(0, 0, screenWidth, screenHeight, (Color){10, 10, 20, 30});
+            // The last number (30) controls fade speed - higher = faster fade
+
+            // Draw bodies
+            for (int i = 0; i < numBodies; i++)
+            {
+                int screenX = screenWidth/2  + (int)(bodies[i].x * scale);
+                int screenY = screenHeight/2 + (int)(bodies[i].y * scale);
+
+                // Different colors for each body
+                Color colors[10] = {RED, BLUE, YELLOW, GREEN, ORANGE, PURPLE, PINK, BROWN, DARKBLUE, LIGHTGRAY}; // Add more colors if needed
+                DrawCircle(screenX, screenY, 5 * bodies[i].mass > 8 ? 8 : 5 * bodies[i].mass < 5 ? 5
+                                                                                                 : 5 * bodies[i].mass,
+                           colors[i]);
+            }
+
+            DrawText("Three Body Simulation", 10, 10, 20, WHITE);
+            DrawText("Press P to Pause", 10, 40, 20, WHITE);
+
+            EndDrawing();
 }

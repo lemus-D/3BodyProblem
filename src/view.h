@@ -37,3 +37,9 @@ void titleScreen(int screenWidth, int screenHeight, GameState *gameState);
 void configScreen(int screenWidth, int screenHeight, GameState *gameState, int *numBodies, int *currentBodyIndex, char numBodiesText[], bool *editingNumBodies, double *G, char GText[], bool *editingG);
 
 void configBodiesScreen(int screenWidth, int screenHeight, GameState *gameState, int *numBodies, int *currentBodyIndex, double G, Body bodies[], double dt);
+
+void mainMenuScreen(int screenWidth, int screenHeight, GameState *gameState, Body bodies[],int *numBodies , double *G);
+
+void pauseScreen(int screenWidth, int screenHeight, GameState *gameState);
+
+void simulationScreen(int screenWidth, int screenHeight, Body bodies[], int numBodies, double scale);
