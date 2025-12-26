@@ -125,7 +125,9 @@ void configScreen(int screenWidth, int screenHeight, GameState *gameState, int *
 }
 
 void configBodiesScreen(int screenWidth, int screenHeight, GameState *gameState, int *numBodies, int *currentBodyIndex, double G, Body bodies[], double dt)
-{
+{   
+    int defaultSize = GuiGetStyle(DEFAULT, TEXT_SIZE);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 26);
 
     BeginDrawing();
     ClearBackground(DARKGRAY);
@@ -136,7 +138,7 @@ void configBodiesScreen(int screenWidth, int screenHeight, GameState *gameState,
 
     int labelX = 150;
     int sliderX = 350;
-    int textBoxX = 570;
+    int textBoxX = 580;
     int startY = 150;
     int spacing = 70;
 
@@ -255,12 +257,13 @@ void configBodiesScreen(int screenWidth, int screenHeight, GameState *gameState,
     }
 
     // Back to setup
-    if (GuiButton((Rectangle){screenWidth / 2 - 75, (float)buttonY + 60, 150, 40}, "Back to Setup"))
+    if (GuiButton((Rectangle){screenWidth / 2 - 100, (float)buttonY + 60, 200, 40}, "Back to Setup"))
     {
         *gameState = CONFIG_SETUP;
     }
 
     EndDrawing();
+    GuiSetStyle(DEFAULT, TEXT_SIZE, defaultSize);
 }
 
 void mainMenuScreen(int screenWidth, int screenHeight, GameState *gameState, Body bodies[], int *numBodies, double *G)
