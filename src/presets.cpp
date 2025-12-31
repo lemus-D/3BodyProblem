@@ -10,28 +10,28 @@ const PresetConfig presets[] = {
      {{-0.97000436, 0.24308753, 0.466203685, 0.43236573, 1.0},
       {0.0, 0.0, -0.93240737, -0.86473146, 1.0},
       {0.97000436, -0.24308753, 0.466203685, 0.43236573, 1.0}}},
-      
+
     {"Binary Star + Planet",
      "Two heavy stars orbit each\nother while a light planet\ndances chaotically around them",
      3,
      1.0,
      {
-         {-1.0, 0.0, 0.0, 0.5, 3.0}, // Star 1
-         {1.0, 0.0, 0.0, -0.5, 3.0}, // Star 2
-         {0.0, 3.0, 1.2, 0.0, 0.2}   // Planet
+         {-1.0, 0.0, 0.0, 0.5, 8.0},     // Star 1
+         {1.0, 0.0, 0.0, -0.5, 8.0},     // Star 2
+         {0.0, 3.0, 2.309401077, 0.0, 1} // Planet
      }},
-     
+
     {"Mini Solar System",
      "One massive sun with three\nplanets in stable orbits\nat different distances",
      4,
      1.0,
      {
-         {0.0, 0.0, 0.0, 0.0, 10.0}, // Sun (massive, stationary)
-         {1.5, 0.0, 0.0, 0.85, 0.5}, // Inner planet
-         {2.5, 0.0, 0.0, 0.65, 0.5}, // Middle planet
-         {3.5, 0.0, 0.0, 0.52, 0.5}  // Outer planet
+         {0.0, 0.0, 0.0, 0.0, 10.0},          // Sun (massive, stationary)
+         {1.5, 0.0, 0.0, 2.58198897, 0.01},   // Inner planet
+         {2.5, 0.0, 0.0, 2, 0.01},            // Middle planet
+         {-3.5, 0.0, 0.0, -1.690308509, 0.01} // Outer planet
      }},
-     
+
     {"Chaotic Butterfly",
      "Four bodies in a high-energy\nconfiguration that creates\nbeautiful chaotic patterns",
      4,
@@ -40,26 +40,25 @@ const PresetConfig presets[] = {
       {1.0, -1.0, -0.3, 0.3, 1.0},
       {-1.0, 1.0, 0.3, -0.3, 1.0},
       {1.0, 1.0, -0.3, -0.3, 1.0}}},
-      
+
     {"Lagrange Triangle",
      "Three equal masses form a\nrotating equilateral triangle\n- perfectly stable!",
      3,
      1.0,
      {
-         {1.0, 0.0, 0.0, 0.577, 1.0},      // Body at 0°
-         {-0.5, 0.866, -0.5, -0.289, 1.0}, // Body at 120°
-         {-0.5, -0.866, 0.5, -0.289, 1.0}  // Body at 240°
+         {1.0, 0.0, 0.0, 0.7598356856, 1.0},                   // Body at 0°
+         {-0.5, 0.866025404, -0.658179276, -0.379917843, 1.0}, // Body at 120°
+         {-0.5, -0.866025404, 0.658179276, -0.379917843, 1.0}  // Body at 240°
      }},
-     
+
     {"Pyth Three-Body",
      "Three unequal masses (3-4-5\nratio) in a figure-8 like\npattern",
      3,
      1.0,
      {{-1.0, 0.0, 0.35, 0.4, 3.0},
       {0.5, 0.0, 0.25, 0.5, 4.0},
-      {1.5, 0.0, -0.6, -0.9, 5.0}}},};
-    
-      
+      {1.5, 0.0, -0.6, -0.9, 5.0}}},
+};
 
 const int NUM_PRESETS = 6;
 

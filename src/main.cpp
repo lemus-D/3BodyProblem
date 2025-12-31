@@ -113,6 +113,7 @@ int main()
                     updateBody(bodies[i], forces[i], dt);
                 }
             }
+            
             simulationScreen(screenWidth, screenHeight, bodies, numBodies, scale);
         }
     }
