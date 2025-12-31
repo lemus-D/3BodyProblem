@@ -2,7 +2,7 @@
 
 A real-time physics simulation of the gravitational three-body problem, built in C++ with Raylib. This project demonstrates the chaotic dynamics of three massive bodies interacting through gravity, with no closed-form solution.
 
-## 🎯 Project Goals
+## Project Goals
 
 This project was built as a learning experience to:
 - Understand gravitational physics and numerical integration
@@ -11,7 +11,7 @@ This project was built as a learning experience to:
 - Master the development workflow from concept to working application
 - Develop clean, modular code architecture with proper separation of concerns
 
-## 🤖 Development Process
+## Development Process
 
 **Built with Claude (Anthropic's AI Assistant)**
 
@@ -25,7 +25,7 @@ This project was developed through an iterative collaboration with Claude, where
 
 This README explicitly documents AI assistance as part of demonstrating modern development practices and transparent collaboration with AI tools.
 
-## ✨ Features
+## Features
 
 ### Physics & Simulation
 - **Accurate Physics**: Implements Velocity Verlet integration for stable, long-term orbital simulations
@@ -63,7 +63,7 @@ This README explicitly documents AI assistance as part of demonstrating modern d
 - **Mass-Proportional Sizing**: Body size reflects its mass
 - **Adaptive Rendering**: Smooth transitions between windowed and fullscreen modes
 
-## 🔧 Technical Implementation
+## Technical Implementation
 
 ### Physics Engine
 - **Gravitational Force**: F = G × m₁ × m₂ / r²
@@ -96,7 +96,7 @@ This README explicitly documents AI assistance as part of demonstrating modern d
 5. **Modular file structure**: Enables easier maintenance and future expansion
 6. **State machine pattern**: Clean separation between title screen, configuration, and simulation states
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **MSYS2** (Windows) with MinGW-w64 compiler
@@ -131,7 +131,7 @@ This README explicitly documents AI assistance as part of demonstrating modern d
    ./build/simulation.exe
 ```
 
-## 📁 Project Structure
+## Project Structure
 ```
 3BODYPROBLEM/
 ├── .vscode/
@@ -158,7 +158,7 @@ This README explicitly documents AI assistance as part of demonstrating modern d
 └── README.md                   # Project documentation
 ```
 
-## 🎮 Usage
+## Usage
 
 ### Running the Simulation
 
@@ -195,7 +195,7 @@ This README explicitly documents AI assistance as part of demonstrating modern d
 - **P**: Pause/Resume simulation
 - **O**: Resume from pause
 
-## 🧮 The Physics
+## The Physics
 
 The three-body problem has no general closed-form solution (proved by Henri Poincaré in the late 1800s). This simulation uses numerical methods to approximate the motion:
 
@@ -210,7 +210,7 @@ The three-body problem has no general closed-form solution (proved by Henri Poin
 - Time-reversible (important for orbital mechanics)
 - Computationally efficient
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - [x] Multiple preset initial conditions
 - [x] Interactive controls (pause)
@@ -225,7 +225,7 @@ The three-body problem has no general closed-form solution (proved by Henri Poin
 - [ ] Replay and time-reversal features
 - [ ] Center of mass tracking option
 
-## 📚 What I Learned
+## What I Learned
 
 ### Technical Skills
 - **Numerical Integration Methods**: Deep understanding of trade-offs between Euler, Verlet, and Runge-Kutta methods
@@ -248,11 +248,7 @@ The three-body problem has no general closed-form solution (proved by Henri Poin
 - **Numerical Stability**: Managing precision and error accumulation in long-running simulations
 - **Conservation Laws**: Implementing physics that respects energy and momentum conservation
 
-## 📄 License
-
-MIT License - feel free to use and modify
-
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Claude (Anthropic)**: AI pair programming assistant that helped guide architecture decisions, explain physics concepts, debug issues, and think through implementation details
 - **Raylib**: Simple and effective graphics library created by Ramon Santamaria
@@ -260,7 +256,7 @@ MIT License - feel free to use and modify
 - **Three-Body Problem**: A beautiful example of deterministic chaos in classical mechanics
 - **Christopher Moore**: Discoverer of the figure-8 solution in 1993
 
-## 📖 References
+## References
 
 - Poincaré, Henri. "New Methods of Celestial Mechanics" (1892)
 - Moore, Cristopher. "Braids in Classical Dynamics" (1993)
