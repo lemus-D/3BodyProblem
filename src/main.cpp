@@ -27,8 +27,10 @@ int main()
     setup(screenWidth, screenHeight, title, 60);
 
     // Simulation parameters
-    const double dt = 0.001;      // Small timestep
-    const int stepsPerFrame = 10; // Multiple physics steps per frame
+    // Shared with loadPreset() so the velocity -> x_prev conversion can never
+    // drift from the timestep actually used here. See presets.h.
+    const double dt = SIM_DT;
+    const int stepsPerFrame = SIM_STEPS_PER_FRAME;
     double G = 1.0;               // Gravitational constant
     int centerX = screenWidth / 2;
     int centerY = screenHeight / 2;
